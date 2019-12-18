@@ -9,7 +9,7 @@ import "react-datepicker/dist/react-datepicker.css";
 class SessionCreator extends React.Component {
   state = {
     baseDate: new Date(),
-    baseDatePrim: "",
+    baseDatePrim: moment(new Date()).format("YYYY-MM-DD"),
     startTime: "10:00",
     endTime: "10:00",
     options: [],
@@ -27,7 +27,7 @@ class SessionCreator extends React.Component {
   };
 
   handleChangeStartDate = date => {
-    console.log("salam", moment(date).format("h:mm"));
+    // console.log("salam", moment(date).format("h:mm"));
     this.setState({
       startTime: date
     });
@@ -40,7 +40,7 @@ class SessionCreator extends React.Component {
   };
 
   addSession = () => {
-    console.log(this.state.title);
+    console.log(this.state.title, this.state.options);
     Network.fetchRequest(
       "/session",
       {

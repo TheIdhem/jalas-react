@@ -8,7 +8,9 @@ class Home extends React.Component {
     super(props);
     this.state = {
       sessions: [],
-      options: []
+      options: [],
+      roomId: 0,
+      roomIdToReserve: 0
     };
   }
 
@@ -24,12 +26,12 @@ class Home extends React.Component {
       });
   };
 
-  addOptions = () => {
+  addOptions = options => {
     // console.log(this.state.baseDatePrim, this.state.startTime);
     Network.fetchRequest(
       "/session/vote",
       {
-        agreeOptionIds: this.state.options,
+        agreeOptionIds: options,
         disAgreeOptionIds: [],
         username: "the_idhem"
       },
@@ -59,11 +61,35 @@ class Home extends React.Component {
       options.push(data);
     }
     this.setState({ options });
-    this.addOptions();
+    this.addOptions(options);
+  };
+
+  reservSession = sessionId => {
+    Network.fetchRequest(
+      "/session/rooms/" + this.state.roomIdToReserve + "/reserve",
+      {
+        optionId: this.state.optioIdToReserve,
+        sessionId: sessionId,
+        username: "the_idhem",
+        startAt: "2019-12-14 19:00:00",
+        endAt: "2019-12-14 19:00:00"
+      },
+      "POST"
+    )
+      .then(response => {
+        console.log(response);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  handleChangeOption = optionId => {
+    this.setState({ optioIdToReserve: optionId });
   };
 
   render() {
-    console.log(this.state.options);
+    console.log(this.state.sessions);
     return (
       <div>
         {this.state.sessions.map((item, index) => (
@@ -91,15 +117,31 @@ class Home extends React.Component {
                   <input
                     type="checkbox"
                     name="selectedOptionTime"
-                    // value={this.props.id}
-                    // checked={this.props.selectedOptionTime == this.props.id}
                     onChange={() => this.handleChange(itemDate.id)}
                   />
+                  <div
+                    style={{
+                      padding: "10px"
+                    }}
+                  >
+                    <input
+                      type="radio"
+                      name="selectedOptionTime"
+                      onChange={() => this.handleChangeOption(itemDate.id)}
+                    />
+                  </div>
                 </div>
                 <div>
                   <p>start: {itemDate.startAt}</p>
                   <p>end: {itemDate.endAt}</p>
                 </div>
+                {item.status == "pending" && (
+                  <div>
+                    <h1>اتاق‌های موجود</h1>
+                    {itemDate.roomsCouldBeReserved &&
+                      itemDate.roomsCouldBeReserved.map(item => <p>{item}</p>)}
+                  </div>
+                )}
               </div>
             ))}
             <p>افراد حاضر در جلسه:</p>
@@ -112,6 +154,24 @@ class Home extends React.Component {
 
             <p>اتاق</p>
             {item.roomId}
+            <div>
+              {item.status == "pending" && (
+                <label>
+                  اتاق انتخابی:
+                  <input
+                    value={this.state.roomIdToReserve}
+                    name="roomToReserve"
+                    onChange={room =>
+                      this.setState({ roomIdToReserve: room.target.value })
+                    }
+                  />
+                </label>
+              )}
+            </div>
+
+            <button onClick={() => this.reservSession(item.id)}>
+              رزرو جلسه
+            </button>
           </div>
         ))}
       </div>
