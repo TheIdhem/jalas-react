@@ -45,11 +45,11 @@ class SessionCreator extends React.Component {
       "/session",
       {
         options: this.state.options,
-        username: "the_idhem",
         users: this.state.userEmails,
         title: this.state.title
       },
-      "POST"
+      "POST",
+      localStorage.getItem("accessToken")
     )
       .then(response => {
         console.log(response);

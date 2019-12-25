@@ -16,7 +16,7 @@ class Home extends React.Component {
 
   getSession = id => {
     // console.log(this.state.baseDatePrim, this.state.startTime);
-    Network.getRequest("/session?username=the_idhem")
+    Network.getRequest("session", localStorage.getItem("accessToken"))
       .then(response => {
         console.log(response);
         this.setState({ sessions: response });
@@ -26,16 +26,13 @@ class Home extends React.Component {
       });
   };
 
-  addOptions = options => {
+  toggleOptionVote = optionId => {
     // console.log(this.state.baseDatePrim, this.state.startTime);
     Network.fetchRequest(
-      "/session/vote",
-      {
-        agreeOptionIds: options,
-        disAgreeOptionIds: [],
-        username: "the_idhem"
-      },
-      "POST"
+      "/session/" + optionId + "/vote",
+      {},
+      "POST",
+      localStorage.getItem("accessToken")
     )
       .then(response => {
         console.log(response);
@@ -61,7 +58,7 @@ class Home extends React.Component {
       options.push(data);
     }
     this.setState({ options });
-    this.addOptions(options);
+    this.toggleOptionVote(data);
   };
 
   reservSession = sessionId => {
@@ -69,12 +66,10 @@ class Home extends React.Component {
       "/session/rooms/" + this.state.roomIdToReserve + "/reserve",
       {
         optionId: this.state.optioIdToReserve,
-        sessionId: sessionId,
-        username: "the_idhem",
-        startAt: "2019-12-14 19:00:00",
-        endAt: "2019-12-14 19:00:00"
+        sessionId: sessionId
       },
-      "POST"
+      "POST",
+      localStorage.getItem("accessToken")
     )
       .then(response => {
         console.log(response);
