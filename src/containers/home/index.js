@@ -102,7 +102,11 @@ class Home extends React.Component {
                   <label>{item.title}</label>
                 </div>
               ) : item.status == "unavailble" ? (
-                <div className="alert alert-dark" role="alert">
+                <div
+                  className="alert alert-dark"
+                  role="alert"
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
                   <button
                     type="button"
                     className="btn btn-dark"
@@ -112,9 +116,14 @@ class Home extends React.Component {
                   >
                     مشاهده ی جلسه غیر قابل دسترس
                   </button>
+                  <label>{item.title}</label>
                 </div>
               ) : item.status == "successReserved" ? (
-                <div className="alert alert-success" role="alert">
+                <div
+                  className="alert alert-success"
+                  role="alert"
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
                   <button
                     type="button"
                     className="btn btn-success"
@@ -124,9 +133,14 @@ class Home extends React.Component {
                   >
                     مشاهده ی جلسه رزروشده
                   </button>
+                  <label>{item.title}</label>
                 </div>
               ) : (
-                <div className="alert alert-danger" role="alert">
+                <div
+                  className="alert alert-danger"
+                  role="alert"
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
                   <button
                     type="button"
                     className="btn btn-danger"
@@ -136,6 +150,7 @@ class Home extends React.Component {
                   >
                     مشاهده ی جلسه کنسل شده
                   </button>
+                  <label>{item.title}</label>
                 </div>
               )}
             </div>

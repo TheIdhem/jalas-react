@@ -41,9 +41,6 @@ class MajorContainer extends React.Component {
   render() {
     return (
       <div>
-        {/* <!-- Modal --> */}
-
-        {/* navbar */}
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
           <a className="navbar-brand" href="#">
             Jalas

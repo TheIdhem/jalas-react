@@ -1,8 +1,9 @@
 import React from "react";
-import DatePicker from "react-datepicker";
-import TimePicker from "react-time-picker";
 import moment from "moment";
 import * as Network from "./../../../../helpers/network";
+import Option from "./../../../../components/option";
+import User from "./../../../../components/user";
+import DatePickerTemplate from "../../../../components/datePickerTemplate";
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -18,7 +19,7 @@ class SessionCreator extends React.Component {
     email: ""
   };
 
-  handleChange = date => {
+  handleChangeDate = date => {
     this.setState({
       baseDate: date,
       baseDatePrim: moment(date).format("YYYY-MM-DD")
@@ -26,14 +27,14 @@ class SessionCreator extends React.Component {
     console.log(moment(date).format("YYYY-MM-DD"));
   };
 
-  handleChangeStartDate = date => {
+  handleChangeStartDateTime = date => {
     // console.log("salam", moment(date).format("h:mm"));
     this.setState({
       startTime: date
     });
   };
 
-  handleChangeEndDate = date => {
+  handleChangeEndDateTime = date => {
     this.setState({
       endTime: date
     });
@@ -82,73 +83,99 @@ class SessionCreator extends React.Component {
   render() {
     return (
       <div
-        className="jumbotron container"
-        dir="rtl"
         style={{
           display: "flex",
-          justifyContent: "flex-start",
+          justifyContent: "flex-end",
           flexDirection: "column",
-          alignItems: "flex-start"
+          alignItems: "flex-end",
+          margin: 100
         }}
       >
         <div>
           <label>
-            عنوان:
             <input
               value={this.state.title}
               name="title"
               onChange={title => this.setState({ title: title.target.value })}
             />
+            :عنوان
           </label>
         </div>
         <div>
           <label>
-            اعضا:
             <input
               value={this.state.email}
               name="title"
               onChange={this.addUserEmail}
             />
+            :اعضا
           </label>
         </div>
-        <div>
-          <label>
-            تاریخ انتخابی:
-            <DatePicker
-              selected={this.state.baseDate}
-              onChange={this.handleChange}
-            />
-          </label>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            alignSelf: "center",
+            width: "100%"
+          }}
+        >
+          <DatePickerTemplate
+            handleChangeStartDateTime={date =>
+              this.handleChangeStartDateTime(date)
+            }
+            handleChangeEndDateTime={date => this.handleChangeEndDateTime(date)}
+            handleChangeDate={date => this.handleChangeDate(date)}
+            baseDate={this.state.baseDate}
+            startTime={this.state.startTime}
+            endTime={this.state.endTime}
+          />
         </div>
-        <div>
-          <label>
-            ساعت شروع:
-            <TimePicker
-              onChange={this.handleChangeStartDate}
-              value={this.state.startTime}
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            ساعت پایان:
-            <TimePicker
-              onChange={this.handleChangeEndDate}
-              value={this.state.endTime}
-            />
-          </label>
-        </div>
-        <div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "space-between",
+            flexWrap: "wrap",
+            width: "100%"
+          }}
+        >
           {this.state.options.map((item, index) => (
-            <div key={index}>
-              <p>{item.startAt}</p>
-              <p>{item.endAt}</p>
-            </div>
+            <Option
+              handleChangeForReserve={optionId => console.log("mohem nist")}
+              sessionStatus={"pending"}
+              option={item}
+              key={index}
+              handleChange={optionId => console.log("mohemNist")}
+              handleRoomForReserv={roomId => console.log("aslan mohem nist")}
+            />
           ))}
         </div>
-        <button onClick={() => this.addOptions()}>اضافه کردن زمان</button>
-        <button onClick={() => this.addUser()}>اضافه کردن کاربر</button>
-        <button onClick={() => this.addSession()}>ساخت جلسه</button>
+
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "space-between",
+            width: "100%",
+            flexWrap: "wrap"
+          }}
+        >
+          {this.state.userEmails.map((item, index) => (
+            <User user={{ name: item, email: item }} key={item} />
+          ))}
+        </div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-around",
+            width: "30%"
+          }}
+        >
+          <button onClick={() => this.addOptions()}>اضافه کردن زمان</button>
+          <button onClick={() => this.addUser()}>اضافه کردن کاربر</button>
+          <button onClick={() => this.addSession()}>ساخت جلسه</button>
+        </div>
       </div>
     );
   }
