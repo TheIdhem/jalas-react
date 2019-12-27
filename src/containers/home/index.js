@@ -2,6 +2,10 @@ import React from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as Network from "./../../helpers/network";
+import Modal from "./../modal";
+
+// css
+import "../css/newSession.css";
 
 class Home extends React.Component {
   constructor(props) {
@@ -10,7 +14,8 @@ class Home extends React.Component {
       sessions: [],
       options: [],
       roomId: 0,
-      roomIdToReserve: 0
+      roomIdToReserve: 0,
+      modalSession: {}
     };
   }
 
@@ -50,7 +55,7 @@ class Home extends React.Component {
     var hasItem = false;
     var options = [];
     this.state.options.forEach(item => {
-      if (item != data) {
+      if (item !== data) {
         options.push(item);
       } else hasItem = true;
     });
@@ -61,114 +66,80 @@ class Home extends React.Component {
     this.toggleOptionVote(data);
   };
 
-  reservSession = sessionId => {
-    Network.fetchRequest(
-      "/session/rooms/" + this.state.roomIdToReserve + "/reserve",
-      {
-        optionId: this.state.optioIdToReserve,
-        sessionId: sessionId
-      },
-      "POST",
-      localStorage.getItem("accessToken")
-    )
-      .then(response => {
-        console.log(response);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
-
   handleChangeOption = optionId => {
     this.setState({ optioIdToReserve: optionId });
   };
 
+  handleClickSession = modalSession => {
+    this.setState({
+      modalSession
+    });
+  };
+
   render() {
-    console.log(this.state.sessions);
     return (
       <div>
-        {this.state.sessions.map((item, index) => (
-          <div
-            style={{
-              border: "solid 2px black",
-              borderRadius: "50px",
-              padding: "50px"
-            }}
-            key={index}
-          >
-            <p>title: {item.title}</p>
-            <p> انتخاب‌ها</p>
-            {item.options.map((itemDate, indexDate) => (
-              <div>
+        <Modal session={this.state.modalSession} />
+
+        {this.state.sessions &&
+          this.state.sessions.map((item, index) => (
+            <div className="container">
+              {item.status === "pending" ? (
                 <div
-                  style={{
-                    display: "flex",
-                    alignItems: "flex-end",
-                    justifyContent: "flex-end",
-                    top: "10px"
-                  }}
-                  key={indexDate}
+                  className="alert alert-warning"
+                  role="alert"
+                  style={{ display: "flex", justifyContent: "space-between" }}
                 >
-                  <input
-                    type="checkbox"
-                    name="selectedOptionTime"
-                    onChange={() => this.handleChange(itemDate.id)}
-                  />
-                  <div
-                    style={{
-                      padding: "10px"
-                    }}
+                  <button
+                    type="button"
+                    className="btn btn-warning"
+                    data-toggle="modal"
+                    data-target="#exampleModal"
+                    onClick={() => this.handleClickSession(item)}
                   >
-                    <input
-                      type="radio"
-                      name="selectedOptionTime"
-                      onChange={() => this.handleChangeOption(itemDate.id)}
-                    />
-                  </div>
+                    مشاهده ی جلسه در حال انتظار
+                  </button>
+                  <label>{item.title}</label>
                 </div>
-                <div>
-                  <p>start: {itemDate.startAt}</p>
-                  <p>end: {itemDate.endAt}</p>
+              ) : item.status == "unavailble" ? (
+                <div className="alert alert-dark" role="alert">
+                  <button
+                    type="button"
+                    className="btn btn-dark"
+                    data-toggle="modal"
+                    data-target="#exampleModal"
+                    onClick={() => this.handleClickSession(item)}
+                  >
+                    مشاهده ی جلسه غیر قابل دسترس
+                  </button>
                 </div>
-                {item.status == "pending" && (
-                  <div>
-                    <h1>اتاق‌های موجود</h1>
-                    {itemDate.roomsCouldBeReserved &&
-                      itemDate.roomsCouldBeReserved.map(item => <p>{item}</p>)}
-                  </div>
-                )}
-              </div>
-            ))}
-            <p>افراد حاضر در جلسه:</p>
-            {item.users.map((name, indexName) => (
-              <p key={indexName}>{name.name}</p>
-            ))}
-
-            <p>وضعیت:</p>
-            {item.status}
-
-            <p>اتاق</p>
-            {item.roomId}
-            <div>
-              {item.status == "pending" && (
-                <label>
-                  اتاق انتخابی:
-                  <input
-                    value={this.state.roomIdToReserve}
-                    name="roomToReserve"
-                    onChange={room =>
-                      this.setState({ roomIdToReserve: room.target.value })
-                    }
-                  />
-                </label>
+              ) : item.status == "successReserved" ? (
+                <div className="alert alert-success" role="alert">
+                  <button
+                    type="button"
+                    className="btn btn-success"
+                    data-toggle="modal"
+                    data-target="#exampleModal"
+                    onClick={() => this.handleClickSession(item)}
+                  >
+                    مشاهده ی جلسه رزروشده
+                  </button>
+                </div>
+              ) : (
+                <div className="alert alert-danger" role="alert">
+                  <button
+                    type="button"
+                    className="btn btn-danger"
+                    data-toggle="modal"
+                    data-target="#exampleModal"
+                    onClick={() => this.handleClickSession(item)}
+                  >
+                    مشاهده ی جلسه کنسل شده
+                  </button>
+                </div>
               )}
             </div>
-
-            <button onClick={() => this.reservSession(item.id)}>
-              رزرو جلسه
-            </button>
-          </div>
-        ))}
+          ))}
       </div>
     );
   }

@@ -81,7 +81,16 @@ class SessionCreator extends React.Component {
 
   render() {
     return (
-      <div>
+      <div
+        className="jumbotron container"
+        dir="rtl"
+        style={{
+          display: "flex",
+          justifyContent: "flex-start",
+          flexDirection: "column",
+          alignItems: "flex-start"
+        }}
+      >
         <div>
           <label>
             عنوان:
@@ -129,7 +138,14 @@ class SessionCreator extends React.Component {
             />
           </label>
         </div>
-        <div></div>
+        <div>
+          {this.state.options.map((item, index) => (
+            <div key={index}>
+              <p>{item.startAt}</p>
+              <p>{item.endAt}</p>
+            </div>
+          ))}
+        </div>
         <button onClick={() => this.addOptions()}>اضافه کردن زمان</button>
         <button onClick={() => this.addUser()}>اضافه کردن کاربر</button>
         <button onClick={() => this.addSession()}>ساخت جلسه</button>

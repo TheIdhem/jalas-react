@@ -18,7 +18,7 @@ const mapStateToProps = ({}) => ({});
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      prevPage: () => push("/my-session")
+      prevPage: () => push("/")
     },
     dispatch
   );
