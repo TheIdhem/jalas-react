@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import TimeOption from "../../../time-option";
 
 const SingleSession = props => (
-    <div>
+    <div className="jumbotron container mt-2">
         <p>
           <TimeOption/>
           <TimeOption/>

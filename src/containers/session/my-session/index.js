@@ -6,12 +6,12 @@ import { connect } from 'react-redux'
 const MySession = props => (
     <div>
         <p>
-            <button onClick={() => props.newSessionPage()}>
+            <button className="btn btn-info" onClick={() => props.newSessionPage()}>
                 ساخت جلسه جدید
             </button>
         </p>
         <p>
-            <button onClick={() => props.createdSessionPage()}>
+            <button className="btn btn-dark" onClick={() => props.createdSessionPage()}>
                 جلسات ایجادشده توسط من
             </button>
         </p>
