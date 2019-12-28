@@ -6,6 +6,9 @@ import InvitedSession from "../session/invited-session";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.js";
 import * as Network from "./../../helpers/network";
+import ReactNotification from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
+import { store } from "react-notifications-component";
 
 class MajorContainer extends React.Component {
   constructor(props) {
@@ -23,6 +26,19 @@ class MajorContainer extends React.Component {
         this.setState({ sessions: response });
       })
       .catch(err => {
+        store.addNotification({
+          title: "GetSession",
+          message: "get error on got sessions",
+          type: "danger",
+          insert: "top",
+          container: "top-right",
+          animationIn: ["animated", "fadeIn"],
+          animationOut: ["animated", "fadeOut"],
+          dismiss: {
+            duration: 5000,
+            onScreen: true
+          }
+        });
         console.log(err);
       });
   };
@@ -83,6 +99,8 @@ class MajorContainer extends React.Component {
             </ul>
           </div>
         </nav>
+
+        <ReactNotification />
 
         {/* tabview */}
         <header className="container">

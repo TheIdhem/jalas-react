@@ -7,6 +7,7 @@ import "bootstrap/dist/js/bootstrap.js";
 import * as Network from "./../../helpers/network";
 import moment from "moment";
 import DatePickerTemplate from "../../components/datePickerTemplate";
+import { store } from "react-notifications-component";
 
 class Modal extends React.Component {
   constructor(props) {
@@ -39,9 +40,35 @@ class Modal extends React.Component {
       localStorage.getItem("accessToken")
     )
       .then(response => {
+        store.addNotification({
+          title: "sessionUpdated",
+          message: "session updated",
+          type: "success",
+          // insert: "top",
+          container: "top-right",
+          animationIn: ["animated", "fadeIn"],
+          animationOut: ["animated", "fadeOut"],
+          dismiss: {
+            duration: 5000,
+            onScreen: true
+          }
+        });
         console.log(response);
       })
       .catch(err => {
+        store.addNotification({
+          title: "Error",
+          message: err,
+          type: "success",
+          // insert: "top",
+          container: "top-right",
+          animationIn: ["animated", "fadeIn"],
+          animationOut: ["animated", "fadeOut"],
+          dismiss: {
+            duration: 5000,
+            onScreen: true
+          }
+        });
         console.log(err);
       });
   };
@@ -143,7 +170,7 @@ class Modal extends React.Component {
       <div
         className="modal fade"
         id="exampleModal"
-        tabindex="-1"
+        tabIndex="-1"
         role="dialog"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"

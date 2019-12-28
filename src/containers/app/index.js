@@ -1,5 +1,10 @@
 import React from "react";
-import { Route, withRouter } from "react-router-dom";
+import {
+  Route,
+  withRouter,
+  BrowserRouter as Router,
+  Switch
+} from "react-router-dom";
 import Home from "../home";
 import MySession from "../session/my-session";
 import InvitedSession from "../session/invited-session";
@@ -10,6 +15,9 @@ import CreatedSession from "../session/my-session/created-session";
 import InProgressSession from "../session/my-session/created-session/InProgressSession";
 import Login from "../login";
 import MaijorContainer from "../majorContainer";
+import SessionInfo from "./../session/info";
+import NotFound from "./../NotFound";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.js";
 
@@ -23,20 +31,22 @@ class App extends React.Component {
     return (
       <div>
         <main>
+          <Route path="/session/:id" component={SessionInfo} />
           <Route exact path="/" component={MaijorContainer} />
-          <Route exact path="/home" component={Home} />
-          <Route exact path="/my-session" component={MySession} />
-          <Route exact path="/invited-session" component={InvitedSession} />
-          <Route exact path="/session-card" component={SessionCard} />
-          <Route exact path="/single-session" component={SingleSession} />
-          <Route exact path="/new-session" component={NewSession} />
-          <Route exact path="/created-session" component={CreatedSession} />
+          <Route path="/home" component={Home} />
+          <Route path="/my-session" component={MySession} />
+          <Route path="/invited-session" component={InvitedSession} />
+          <Route path="/session-card" component={SessionCard} />
+          <Route path="/single-session" component={SingleSession} />
+          <Route path="/new-session" component={NewSession} />
+          <Route path="/created-session" component={CreatedSession} />
           <Route
             exact
             path="/in-progress-session"
             component={InProgressSession}
           />
           <Route exact path="/login" component={Login} />
+          {/* <Route path="*" component={NotFound} /> */}
         </main>
       </div>
     );

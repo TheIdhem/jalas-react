@@ -4,6 +4,7 @@ import * as Network from "./../../../../helpers/network";
 import Option from "./../../../../components/option";
 import User from "./../../../../components/user";
 import DatePickerTemplate from "../../../../components/datePickerTemplate";
+import { store } from "react-notifications-component";
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -53,9 +54,35 @@ class SessionCreator extends React.Component {
       localStorage.getItem("accessToken")
     )
       .then(response => {
+        store.addNotification({
+          title: "sessionCreation",
+          message: "session successful created",
+          type: "success",
+          // insert: "top",
+          container: "top-right",
+          animationIn: ["animated", "fadeIn"],
+          animationOut: ["animated", "fadeOut"],
+          dismiss: {
+            duration: 5000,
+            onScreen: true
+          }
+        });
         console.log(response);
       })
       .catch(err => {
+        store.addNotification({
+          title: "sessionCreation",
+          message: "session creation got error",
+          type: "danger",
+          // insert: "top",
+          container: "top-right",
+          animationIn: ["animated", "fadeIn"],
+          animationOut: ["animated", "fadeOut"],
+          dismiss: {
+            duration: 5000,
+            onScreen: true
+          }
+        });
         console.log(err);
       });
   };
