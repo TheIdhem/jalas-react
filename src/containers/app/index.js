@@ -1,8 +1,8 @@
 import React from "react";
 import {
+  BrowserRouter as Router,
   Route,
   withRouter,
-  BrowserRouter as Router,
   Switch
 } from "react-router-dom";
 import Home from "../home";
@@ -17,6 +17,9 @@ import Login from "../login";
 import MaijorContainer from "../majorContainer";
 import SessionInfo from "./../session/info";
 import NotFound from "./../NotFound";
+import ReactNotification from "react-notifications-component";
+
+import "react-notifications-component/dist/theme.css";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.js";
@@ -48,6 +51,7 @@ class App extends React.Component {
           <Route exact path="/login" component={Login} />
           {/* <Route path="*" component={NotFound} /> */}
         </main>
+        <ReactNotification />
       </div>
     );
   }

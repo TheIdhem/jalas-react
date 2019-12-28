@@ -6,8 +6,6 @@ import InvitedSession from "../session/invited-session";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.js";
 import * as Network from "./../../helpers/network";
-import ReactNotification from "react-notifications-component";
-import "react-notifications-component/dist/theme.css";
 import { store } from "react-notifications-component";
 
 class MajorContainer extends React.Component {
@@ -22,7 +20,6 @@ class MajorContainer extends React.Component {
   getSession = id => {
     Network.getRequest("session", localStorage.getItem("accessToken"))
       .then(response => {
-        console.log(response);
         this.setState({ sessions: response });
       })
       .catch(err => {
@@ -44,8 +41,6 @@ class MajorContainer extends React.Component {
   };
 
   componentWillMount() {
-    console.log("salam");
-    console.log(localStorage.getItem("username"));
     this.setState({ username: localStorage.getItem("username") });
     this.getSession();
   }
@@ -99,8 +94,6 @@ class MajorContainer extends React.Component {
             </ul>
           </div>
         </nav>
-
-        <ReactNotification />
 
         {/* tabview */}
         <header className="container">

@@ -19,8 +19,8 @@ class Home extends React.Component {
     };
   }
 
-  getSession = id => {
-    // console.log(this.state.baseDatePrim, this.state.startTime);
+  getSession = () => {
+    console.log("getSession");
     Network.getRequest("session", localStorage.getItem("accessToken"))
       .then(response => {
         console.log(response);
@@ -79,7 +79,10 @@ class Home extends React.Component {
   render() {
     return (
       <div>
-        <Modal session={this.state.modalSession} />
+        <Modal
+          session={this.state.modalSession}
+          getAllSession={() => this.getSession()}
+        />
 
         {this.state.sessions &&
           this.state.sessions.map((item, index) => (

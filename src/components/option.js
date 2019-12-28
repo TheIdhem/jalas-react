@@ -28,7 +28,7 @@ class Option extends React.Component {
       localStorage.getItem("accessToken")
     )
       .then(response => {
-        console.log(status);
+        // console.log(status);
       })
       .catch(err => {
         // console.log(err);
@@ -92,7 +92,7 @@ class Option extends React.Component {
 
   render() {
     const { sessionStatus, option, hiddenVote } = this.props;
-    console.log(option);
+  
     return (
       <div
         className="btn btn-secondary mt-1"

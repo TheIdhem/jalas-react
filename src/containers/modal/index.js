@@ -53,13 +53,12 @@ class Modal extends React.Component {
             onScreen: true
           }
         });
-        console.log(response);
       })
       .catch(err => {
         store.addNotification({
-          title: "Error",
-          message: err,
-          type: "success",
+          title: "Error on update session",
+          message: err.message,
+          type: "danger",
           // insert: "top",
           container: "top-right",
           animationIn: ["animated", "fadeIn"],
@@ -71,14 +70,10 @@ class Modal extends React.Component {
         });
         console.log(err);
       });
+    this.props.getAllSession();
   };
 
   reservSession = sessionId => {
-    console.log(
-      sessionId,
-      this.state.roomIdToReserve,
-      this.state.optionIdForReserve
-    );
     Network.fetchRequest(
       "/session/rooms/" + this.state.roomIdToReserve + "/reserve",
       {
@@ -89,9 +84,35 @@ class Modal extends React.Component {
       localStorage.getItem("accessToken")
     )
       .then(response => {
+        store.addNotification({
+          title: "sessionReservation",
+          message: "session successfully reserved",
+          type: "success",
+          // insert: "top",
+          container: "top-right",
+          animationIn: ["animated", "fadeIn"],
+          animationOut: ["animated", "fadeOut"],
+          dismiss: {
+            duration: 5000,
+            onScreen: true
+          }
+        });
         console.log(response);
       })
       .catch(err => {
+        store.addNotification({
+          title: "sessionReservation",
+          message: err.message,
+          type: "danger",
+          insert: "top",
+          container: "top-right",
+          animationIn: ["animated", "fadeIn"],
+          animationOut: ["animated", "fadeOut"],
+          dismiss: {
+            duration: 5000,
+            onScreen: true
+          }
+        });
         console.log(err);
       });
   };

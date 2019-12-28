@@ -25,11 +25,9 @@ class SessionCreator extends React.Component {
       baseDate: date,
       baseDatePrim: moment(date).format("YYYY-MM-DD")
     });
-    console.log(moment(date).format("YYYY-MM-DD"));
   };
 
   handleChangeStartDateTime = date => {
-    // console.log("salam", moment(date).format("h:mm"));
     this.setState({
       startTime: date
     });
@@ -42,7 +40,6 @@ class SessionCreator extends React.Component {
   };
 
   addSession = () => {
-    console.log(this.state.title, this.state.options);
     Network.fetchRequest(
       "/session",
       {
