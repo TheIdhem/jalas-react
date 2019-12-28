@@ -83,7 +83,7 @@ class Home extends React.Component {
 
         {this.state.sessions &&
           this.state.sessions.map((item, index) => (
-            <div className="container">
+            <div className="container" key={index}>
               {item.status === "pending" ? (
                 <div
                   className="alert alert-warning"

@@ -26,6 +26,8 @@ class Login extends React.Component {
     )
       .then(response => {
         localStorage.setItem("accessToken", "Bearer " + response.token);
+        localStorage.setItem("userId", response.user.id);
+        localStorage.setItem("userName", response.user.username);
         this.props.history.push("/");
       })
       .catch(err => {

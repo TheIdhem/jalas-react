@@ -10,7 +10,9 @@ class Option extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      userVote: null
+      userVote: null,
+      agreeVotes: 0,
+      disAgreeVotes: 0
     };
   }
 
@@ -31,7 +33,7 @@ class Option extends React.Component {
       .catch(err => {
         // console.log(err);
       });
-    this.setState({ userVote: status == "up" ? true : false });
+    // this.setState({ userVote: status == "up" ? true : false });
   };
 
   upVote = () => {
@@ -39,7 +41,16 @@ class Option extends React.Component {
       this.props.option.id,
       this.state.userVote ? "delete" : "up"
     );
-    this.setState({ userVote: this.state.userVote ? null : true });
+    this.setState({
+      userVote: this.state.userVote ? null : true,
+      agreeVotes: this.state.userVote
+        ? this.state.agreeVotes - 1
+        : this.state.agreeVotes + 1,
+      disAgreeVotes:
+        this.state.userVote == false
+          ? this.state.disAgreeVotes - 1
+          : this.state.disAgreeVotes
+    });
   };
 
   downVote = () => {
@@ -47,11 +58,40 @@ class Option extends React.Component {
       this.props.option.id,
       this.state.userVote == false ? "delete" : "down"
     );
-    this.setState({ userVote: this.state.userVote == false ? null : false });
+    this.setState({
+      agreeVotes: this.state.userVote
+        ? this.state.agreeVotes - 1
+        : this.state.agreeVotes,
+      userVote: this.state.userVote == false ? null : false,
+      disAgreeVotes:
+        this.state.userVote == false
+          ? this.state.disAgreeVotes - 1
+          : this.state.disAgreeVotes + 1
+    });
   };
+
+  componentWillMount() {
+    console.log("saalaaaaaaamcomponentWillMount", this.props.option);
+    var userId = localStorage.getItem("userId");
+    var userVoteMap = {};
+    this.props.option.votes.map(
+      item => (userVoteMap[item.user.id] = item.status)
+    );
+    this.setState({
+      agreeVotes: this.props.option.agreeVotes,
+      disAgreeVotes: this.props.option.disAgreeVotes,
+      userVote:
+        userVoteMap[userId] == "up"
+          ? true
+          : userVoteMap[userId] == "down"
+          ? false
+          : null
+    });
+  }
 
   render() {
     const { sessionStatus, option, hiddenVote } = this.props;
+    console.log(option);
     return (
       <div
         className="btn btn-secondary mt-1"
@@ -59,25 +99,43 @@ class Option extends React.Component {
       >
         <div className=" custom-checkbox mb-3">
           {!hiddenVote ? (
-            <div style={{ display: "flex", flexDirection: "column" }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "flex-start",
+                alignItems: "flex-start"
+              }}
+            >
               <FontAwesomeIcon
                 className="fas fa-camera fa-3x"
                 icon={faSortUp}
                 color={this.state.userVote ? "orange" : "white"}
-                size={"fa-10x"}
+                size={"10x"}
                 onClick={this.upVote}
               />
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "4%"
+                }}
+              >
+                {this.state.agreeVotes - this.state.disAgreeVotes}
+              </div>
+
               <FontAwesomeIcon
                 className="fas fa-camera fa-3x"
                 icon={faSortDown}
                 color={this.state.userVote == false ? "orange" : "white"}
-                size={"fa-10x"}
+                size={"10x"}
                 onClick={this.downVote}
               />
             </div>
           ) : null}
 
-          <label for={"customControlValidation1"}>
+          <label>
             <p>start: {option.startAt}</p>
             <p>end: {option.endAt}</p>
           </label>

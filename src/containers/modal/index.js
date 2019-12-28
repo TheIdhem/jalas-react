@@ -167,7 +167,7 @@ class Modal extends React.Component {
               <div className="card border-dark mb-3 container">
                 <div>
                   <div className="form-group">
-                    <label for="inputAddress">عنوان</label>
+                    <label>عنوان</label>
                     <input
                       type="text"
                       className="form-control"
@@ -188,6 +188,7 @@ class Modal extends React.Component {
                   {this.state.sessionOptions &&
                     this.state.sessionOptions.map((itemDate, indexDate) => (
                       <Option
+                        key={indexDate}
                         handleChangeForReserve={optionId =>
                           this.handleChangeForReserve(optionId)
                         }
