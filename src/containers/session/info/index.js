@@ -74,16 +74,16 @@ class SessionInfo extends React.Component {
                   className="btn-group btn-group-toggle btn-group-vertical"
                   data-toggle="buttons"
                 >
-                  {session &&
-                    session.options &&
-                    session.options.map((itemDate, indexDate) => (
-                      <Option
-                        key={indexDate}
-                        sessionStatus={session.status}
-                        option={itemDate}
-                        hiddenVote={itemDate.id}
-                      />
-                    ))}
+                  {session && (
+                    <Option
+                      sessionStatus={session.status}
+                      option={{
+                        startAt: session.startAt,
+                        endAt: session.startAt
+                      }}
+                      hiddenVote
+                    />
+                  )}
                 </div>
                 <hr />
 
@@ -95,6 +95,12 @@ class SessionInfo extends React.Component {
                       ))}
                   </div>
                 </div>
+                {session && (
+                  <div>
+                    اتاق رزرو شده:
+                    {session.roomId}
+                  </div>
+                )}
               </div>
             </div>
           </div>

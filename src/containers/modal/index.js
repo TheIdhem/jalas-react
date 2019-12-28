@@ -259,6 +259,12 @@ class Modal extends React.Component {
                       ))}
                   </div>
                 </div>
+                {session.status == "successReserved" && session && (
+                  <div>
+                    اتاق رزرو شده:
+                    {session.roomId}
+                  </div>
+                )}
                 <div
                   style={{
                     flexDirection: "row",
