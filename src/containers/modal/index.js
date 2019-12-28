@@ -69,37 +69,6 @@ class Modal extends React.Component {
       });
   };
 
-  toggleOptionVote = optionId => {
-    // console.log(this.state.baseDatePrim, this.state.startTime);
-    Network.fetchRequest(
-      "/session/" + optionId + "/vote",
-      {},
-      "POST",
-      localStorage.getItem("accessToken")
-    )
-      .then(response => {
-        console.log(response);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
-
-  handleChange = data => {
-    var hasItem = false;
-    var options = [];
-    this.state.optionsClickByUser.forEach(item => {
-      if (item !== data) {
-        options.push(item);
-      } else hasItem = true;
-    });
-    if (!hasItem) {
-      options.push(data);
-    }
-    this.setState({ optionsClickByUser: options });
-    this.toggleOptionVote(data);
-  };
-
   handleChangeForReserve = optionId => {
     console.log("optionId", optionId);
     this.setState({ optionIdForReserve: optionId });
@@ -224,7 +193,6 @@ class Modal extends React.Component {
                         }
                         sessionStatus={session.status}
                         option={itemDate}
-                        handleChange={optionId => this.handleChange(optionId)}
                         handleRoomForReserv={roomId =>
                           this.handleRoomForReserv(roomId)
                         }

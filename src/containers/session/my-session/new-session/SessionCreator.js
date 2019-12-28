@@ -147,6 +147,7 @@ class SessionCreator extends React.Component {
               key={index}
               handleChange={optionId => console.log("mohemNist")}
               handleRoomForReserv={roomId => console.log("aslan mohem nist")}
+              hiddenVote
             />
           ))}
         </div>

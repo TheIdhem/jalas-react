@@ -4,43 +4,86 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSortUp, faSortDown } from "@fortawesome/free-solid-svg-icons";
+import * as Network from "./../helpers/network";
 
 class Option extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      userVote: null
+    };
   }
 
+  voteToOption = (optionId, status) => {
+    // console.log(optionId, this.state.startTime);
+    Network.fetchRequest(
+      "/session/vote",
+      {
+        status,
+        optionId
+      },
+      "POST",
+      localStorage.getItem("accessToken")
+    )
+      .then(response => {
+        console.log(status);
+      })
+      .catch(err => {
+        // console.log(err);
+      });
+    this.setState({ userVote: status == "up" ? true : false });
+  };
+
+  upVote = () => {
+    this.voteToOption(
+      this.props.option.id,
+      this.state.userVote ? "delete" : "up"
+    );
+    this.setState({ userVote: this.state.userVote ? null : true });
+  };
+
+  downVote = () => {
+    this.voteToOption(
+      this.props.option.id,
+      this.state.userVote == false ? "delete" : "down"
+    );
+    this.setState({ userVote: this.state.userVote == false ? null : false });
+  };
+
   render() {
-    const { sessionStatus, option } = this.props;
+    const { sessionStatus, option, hiddenVote } = this.props;
     return (
       <div
         className="btn btn-secondary mt-1"
         onClick={() => this.props.handleChangeForReserve(option.id)}
       >
         <div className=" custom-checkbox mb-3">
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            <FontAwesomeIcon
-              className="fas fa-camera fa-3x"
-              icon={faSortUp}
-              color={"white"}
-              size={"fa-10x"}
-            />
-            <FontAwesomeIcon
-              className="fas fa-camera fa-3x"
-              icon={faSortDown}
-              color={"white"}
-              size={"fa-10x"}
-            />
-          </div>
+          {!hiddenVote ? (
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <FontAwesomeIcon
+                className="fas fa-camera fa-3x"
+                icon={faSortUp}
+                color={this.state.userVote ? "orange" : "white"}
+                size={"fa-10x"}
+                onClick={this.upVote}
+              />
+              <FontAwesomeIcon
+                className="fas fa-camera fa-3x"
+                icon={faSortDown}
+                color={this.state.userVote == false ? "orange" : "white"}
+                size={"fa-10x"}
+                onClick={this.downVote}
+              />
+            </div>
+          ) : null}
 
           <label for={"customControlValidation1"}>
             <p>start: {option.startAt}</p>
             <p>end: {option.endAt}</p>
           </label>
-          <hr />
+          {!hiddenVote ? <hr /> : null}
 
-          {sessionStatus === "pending" && (
+          {sessionStatus === "pending" && !hiddenVote && (
             <div>
               <h1>اتاق‌های موجود</h1>
               <div>
