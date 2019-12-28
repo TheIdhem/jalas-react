@@ -71,22 +71,23 @@ class Option extends React.Component {
   };
 
   componentWillMount() {
-    console.log("saalaaaaaaamcomponentWillMount", this.props.option);
-    var userId = localStorage.getItem("userId");
-    var userVoteMap = {};
-    this.props.option.votes.map(
-      item => (userVoteMap[item.user.id] = item.status)
-    );
-    this.setState({
-      agreeVotes: this.props.option.agreeVotes,
-      disAgreeVotes: this.props.option.disAgreeVotes,
-      userVote:
-        userVoteMap[userId] == "up"
-          ? true
-          : userVoteMap[userId] == "down"
-          ? false
-          : null
-    });
+    if (!this.props.hiddenVote) {
+      var userId = localStorage.getItem("userId");
+      var userVoteMap = {};
+      this.props.option.votes.map(
+        item => (userVoteMap[item.user.id] = item.status)
+      );
+      this.setState({
+        agreeVotes: this.props.option.agreeVotes,
+        disAgreeVotes: this.props.option.disAgreeVotes,
+        userVote:
+          userVoteMap[userId] == "up"
+            ? true
+            : userVoteMap[userId] == "down"
+            ? false
+            : null
+      });
+    }
   }
 
   render() {

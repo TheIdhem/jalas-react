@@ -27,7 +27,7 @@ class Login extends React.Component {
       .then(response => {
         localStorage.setItem("accessToken", "Bearer " + response.token);
         localStorage.setItem("userId", response.user.id);
-        localStorage.setItem("userName", response.user.username);
+        localStorage.setItem("username", response.user.username);
         this.props.history.push("/");
       })
       .catch(err => {
@@ -45,13 +45,14 @@ class Login extends React.Component {
         style={{
           display: "flex",
           justifyContent: "center",
+          flex: 1,
           backgroundImage:
             "url(" +
             "https://i.guim.co.uk/img/static/sys-images/Guardian/Pix/pictures/2009/1/29/1233246280180/Ayatollah-Khomeini-Irania-001.jpg?width=620&quality=85&auto=format&fit=max&s=df274f83f281f657c165f51a184699a1" +
-            ")",
-          backgroundPosition: "center",
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat"
+            ")"
+          // backgroundPosition: "center"
+          // backgroundSize: "cover",
+          // backgroundRepeat: "no-repeat"
         }}
       >
         <MuiThemeProvider>

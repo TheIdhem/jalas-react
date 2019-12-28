@@ -17,7 +17,6 @@ class MajorContainer extends React.Component {
   }
 
   getSession = id => {
-    // console.log(this.state.baseDatePrim, this.state.startTime);
     Network.getRequest("session", localStorage.getItem("accessToken"))
       .then(response => {
         console.log(response);
@@ -29,6 +28,9 @@ class MajorContainer extends React.Component {
   };
 
   componentWillMount() {
+    console.log("salam");
+    console.log(localStorage.getItem("username"));
+    this.setState({ username: localStorage.getItem("username") });
     this.getSession();
   }
 
@@ -75,6 +77,11 @@ class MajorContainer extends React.Component {
               </li>
             </ul>
           </div>
+          <div className="navbar-brand" style={{}}>
+            <ul>
+              <a>{localStorage.getItem("username")}</a>
+            </ul>
+          </div>
         </nav>
 
         {/* tabview */}
@@ -91,7 +98,7 @@ class MajorContainer extends React.Component {
                   aria-controls="pills-home"
                   aria-selected="true"
                 >
-                  صفحه‌ی اصلی
+                  جلسات من
                 </a>
               </li>
               <li className="nav-item">
@@ -104,20 +111,7 @@ class MajorContainer extends React.Component {
                   aria-controls="pills-profile"
                   aria-selected="false"
                 >
-                  جلسات من
-                </a>
-              </li>
-              <li className="nav-item">
-                <a
-                  className="nav-link"
-                  id="pills-contact-tab"
-                  data-toggle="pill"
-                  href="#pills-contact"
-                  role="tab"
-                  aria-controls="pills-contact"
-                  aria-selected="false"
-                >
-                  جلسات دعوت‌شده
+                  ساخت جلسه
                 </a>
               </li>
             </ul>
@@ -138,14 +132,6 @@ class MajorContainer extends React.Component {
                 aria-labelledby="pills-profile-tab"
               >
                 .<MySession />.
-              </div>
-              <div
-                className="tab-pane fade"
-                id="pills-contact"
-                role="tabpanel"
-                aria-labelledby="pills-contact-tab"
-              >
-                <InvitedSession />.
               </div>
             </div>
           </div>
