@@ -7,6 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.js";
 import * as Network from "./../../helpers/network";
 import { store } from "react-notifications-component";
+import { Redirect } from "react-router-dom";
 
 class MajorContainer extends React.Component {
   constructor(props) {
@@ -54,6 +55,9 @@ class MajorContainer extends React.Component {
   render() {
     return (
       <div>
+        {localStorage.getItem("username") === "admin" && (
+          <Redirect to="/quality" />
+        )}
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
           <a className="navbar-brand" href="#">
             Jalas
@@ -88,9 +92,9 @@ class MajorContainer extends React.Component {
               </li>
             </ul>
           </div>
-          <div className="navbar-brand" style={{}}>
+          <div className="navbar-brand" style={{ backgroundColor: "inherit" }}>
             <ul>
-              <a>{localStorage.getItem("username")}</a>
+              <a href="/profile">{localStorage.getItem("username")}</a>
             </ul>
           </div>
         </nav>

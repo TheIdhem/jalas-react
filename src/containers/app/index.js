@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  withRouter,
-  Switch,
-  Redirect
-} from "react-router-dom";
+import { Route, withRouter, Switch, Redirect } from "react-router-dom";
 import Home from "../home";
 import MySession from "../session/my-session";
 import InvitedSession from "../session/invited-session";
@@ -17,8 +11,11 @@ import InProgressSession from "../session/my-session/created-session/InProgressS
 import Login from "../login";
 import MaijorContainer from "../majorContainer";
 import SessionInfo from "./../session/info";
-import NotFound from "./../NotFound";
 import ReactNotification from "react-notifications-component";
+import Profile from "../profile";
+import Quality from "../quality";
+
+import Comment from "../comment";
 
 import "react-notifications-component/dist/theme.css";
 
@@ -32,6 +29,8 @@ class App extends React.Component {
         {!localStorage.getItem("accessToken") && <Redirect to="/login" />}
         <main>
           <Switch>
+            <Route path="/profile" component={Profile} />
+            <Route path="/comment" component={Comment} />
             <Route path="/session/:id" component={SessionInfo} />
             <Route exact path="/" component={MaijorContainer} />
             <Route path="/home" component={Home} />
@@ -41,6 +40,7 @@ class App extends React.Component {
             <Route path="/single-session" component={SingleSession} />
             <Route path="/new-session" component={NewSession} />
             <Route path="/created-session" component={CreatedSession} />
+            <Route path="/quality" component={Quality} />
             <Route
               exact
               path="/in-progress-session"
