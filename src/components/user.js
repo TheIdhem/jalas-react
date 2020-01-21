@@ -10,7 +10,7 @@ class User extends React.Component {
 
   render() {
     return (
-      <div className="col-md-4">
+      <div>
         <div className="card user-card">
           <div className="card-block">
             <div className="user-image">

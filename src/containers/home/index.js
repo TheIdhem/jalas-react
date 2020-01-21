@@ -104,7 +104,7 @@ class Home extends React.Component {
                   </button>
                   <label>{item.title}</label>
                 </div>
-              ) : item.status == "unavailble" ? (
+              ) : item.status === "unavailble" ? (
                 <div
                   className="alert alert-dark"
                   role="alert"
@@ -121,7 +121,7 @@ class Home extends React.Component {
                   </button>
                   <label>{item.title}</label>
                 </div>
-              ) : item.status == "successReserved" ? (
+              ) : item.status === "successReserved" ? (
                 <div
                   className="alert alert-success"
                   role="alert"
@@ -163,7 +163,4 @@ class Home extends React.Component {
   }
 }
 
-const mapStateToProps = ({}) => ({});
-const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default Home;

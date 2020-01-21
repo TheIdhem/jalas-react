@@ -12,6 +12,7 @@
   },
   "devDependencies": {
     "css-loader": "^3.4.0",
+    "isomorphic-style-loader": "^5.1.0",
     "prettier": "1.19.1",
     "react-scripts": "2.1.8",
     "style-loader": "^1.1.1"
@@ -20,12 +21,16 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.26",
     "@fortawesome/free-solid-svg-icons": "^5.12.0",
     "@fortawesome/react-fontawesome": "^0.1.8",
+    "@material-ui/core": "^4.0.0-rc.0",
+    "@material-ui/icons": "^4.5.1",
     "bootstrap": "^4.4.1",
     "connected-react-router": "4.5.0",
     "jquery": "^3.4.1",
     "material-ui": "^0.20.2",
+    "material-ui-icons": "^1.0.0-beta.36",
     "moment": "^2.24.0",
     "popper.js": "^1.16.0",
+    "prop-types": "latest",
     "react": "^16.12.0",
     "react-datepicker": "^2.10.1",
     "react-dom": "^16.12.0",
@@ -37,6 +42,7 @@
     "redux": "4.0.4",
     "redux-thunk": "2.3.0",
     "sanitize.css": "7.0.3",
+    "semantic-ui-react": "^0.88.2",
     "serve": "10.1.2"
   },
   "browserslist": [

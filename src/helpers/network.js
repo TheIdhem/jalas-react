@@ -18,6 +18,7 @@ export function fetchRequest(
       res
         .json()
         .then(responseJSON => {
+          console.log("response", responseJSON);
           if (res.ok) addStatusToResponse(res, responseJSON);
           res.ok ? resolve({ ...responseJSON }) : reject(responseJSON);
         })

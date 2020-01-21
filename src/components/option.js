@@ -3,7 +3,11 @@ import { Route, Link, withRouter } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSortUp, faSortDown } from "@fortawesome/free-solid-svg-icons";
+import {
+  faSortUp,
+  faSortDown,
+  faExclamationCircle
+} from "@fortawesome/free-solid-svg-icons";
 import * as Network from "./../helpers/network";
 
 class Option extends React.Component {
@@ -12,7 +16,9 @@ class Option extends React.Component {
     this.state = {
       userVote: null,
       agreeVotes: 0,
-      disAgreeVotes: 0
+      disAgreeVotes: 0,
+      userVoteAbstain: null,
+      voteAbstain: 0
     };
   }
 
@@ -33,7 +39,30 @@ class Option extends React.Component {
       .catch(err => {
         // console.log(err);
       });
-    // this.setState({ userVote: status == "up" ? true : false });
+  };
+
+  voteAbstain = () => {
+    this.voteToOption(
+      this.props.option.id,
+      this.state.userVoteAbstain ? "delete" : "soso"
+    );
+    this.setState({
+      userVoteAbstain: this.state.userVoteAbstain ? null : true,
+      voteAbstain: this.state.userVoteAbstain
+        ? this.state.voteAbstain - 1
+        : this.state.voteAbstain + 1,
+      userVote:
+        this.state.userVote || this.state.userVote == false
+          ? null
+          : this.state.userVote,
+      agreeVotes: this.state.userVote
+        ? this.state.agreeVotes - 1
+        : this.state.agreeVotes,
+      disAgreeVotes:
+        this.state.userVote == false
+          ? this.state.disAgreeVotes - 1
+          : this.state.disAgreeVotes
+    });
   };
 
   upVote = () => {
@@ -49,7 +78,13 @@ class Option extends React.Component {
       disAgreeVotes:
         this.state.userVote == false
           ? this.state.disAgreeVotes - 1
-          : this.state.disAgreeVotes
+          : this.state.disAgreeVotes,
+      userVoteAbstain: this.state.userVoteAbstain
+        ? null
+        : this.state.userVoteAbstain,
+      voteAbstain: this.state.userVoteAbstain
+        ? this.state.voteAbstain - 1
+        : this.state.voteAbstain
     });
   };
 
@@ -66,7 +101,13 @@ class Option extends React.Component {
       disAgreeVotes:
         this.state.userVote == false
           ? this.state.disAgreeVotes - 1
-          : this.state.disAgreeVotes + 1
+          : this.state.disAgreeVotes + 1,
+      userVoteAbstain: this.state.userVoteAbstain
+        ? null
+        : this.state.userVoteAbstain,
+      voteAbstain: this.state.userVoteAbstain
+        ? this.state.voteAbstain - 1
+        : this.state.voteAbstain
     });
   };
 
@@ -80,19 +121,21 @@ class Option extends React.Component {
       this.setState({
         agreeVotes: this.props.option.agreeVotes,
         disAgreeVotes: this.props.option.disAgreeVotes,
+        voteAbstain: this.props.option.sosoVotes,
         userVote:
-          userVoteMap[userId] == "up"
+          userVoteMap[userId] === "up"
             ? true
-            : userVoteMap[userId] == "down"
+            : userVoteMap[userId] === "down"
             ? false
-            : null
+            : null,
+        userVoteAbstain: userVoteMap[userId] === "soso" ? true : null
       });
     }
   }
 
   render() {
     const { sessionStatus, option, hiddenVote } = this.props;
-  
+
     return (
       <div
         className="btn btn-secondary mt-1"
@@ -103,36 +146,61 @@ class Option extends React.Component {
             <div
               style={{
                 display: "flex",
-                flexDirection: "column",
-                justifyContent: "flex-start",
-                alignItems: "flex-start"
+                flexDirection: "row"
               }}
             >
-              <FontAwesomeIcon
-                className="fas fa-camera fa-3x"
-                icon={faSortUp}
-                color={this.state.userVote ? "orange" : "white"}
-                size={"10x"}
-                onClick={this.upVote}
-              />
               <div
                 style={{
                   display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  width: "4%"
+                  flexDirection: "column",
+                  justifyContent: "flex-start",
+                  alignItems: "flex-start"
                 }}
               >
-                {this.state.agreeVotes - this.state.disAgreeVotes}
-              </div>
+                <FontAwesomeIcon
+                  className="fas fa-camera fa-3x"
+                  icon={faSortUp}
+                  color={this.state.userVote ? "orange" : "white"}
+                  size={"10x"}
+                  onClick={this.upVote}
+                />
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "100%"
+                  }}
+                >
+                  {this.state.agreeVotes - this.state.disAgreeVotes}
+                </div>
 
-              <FontAwesomeIcon
-                className="fas fa-camera fa-3x"
-                icon={faSortDown}
-                color={this.state.userVote == false ? "orange" : "white"}
-                size={"10x"}
-                onClick={this.downVote}
-              />
+                <FontAwesomeIcon
+                  className="fas fa-camera fa-3x"
+                  icon={faSortDown}
+                  color={this.state.userVote == false ? "orange" : "white"}
+                  size={"10x"}
+                  onClick={this.downVote}
+                />
+              </div>
+              <div
+                className="row"
+                style={{
+                  marginLeft: "30px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center"
+                }}
+              >
+                <FontAwesomeIcon
+                  className="fas fa-camera "
+                  icon={faExclamationCircle}
+                  color={this.state.userVoteAbstain ? "orange" : "white"}
+                  size={"2x"}
+                  onClick={this.voteAbstain}
+                />
+                <h1>{this.state.voteAbstain}</h1>
+              </div>
             </div>
           ) : null}
 
